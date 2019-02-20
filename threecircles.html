@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <style type="text/css">
+        body {
+            background-color: #ccc;
+            width: 100%;
+        }
+
+        #canvas {
+            background-color: #ccc;
+            width: 1000px;
+            height: 500px;
+            margin: 50px auto;
+            border: solid 1px #000;
+        }
+
+        svg {
+            background-color: #fff;
+        }
+    </style>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <title>D3 Practice</title>
+</head>
+
+<body>
+    <noscript>
+        You need to enable JavaScript to run this app.
+    </noscript>
+    <div id="canvas"></div>
+    <script type="text/JavaScript">
+
+        var width = 1000, height = 500;
+        var data = [32, 57, 112, 293];
+
+        var canvas = d3.select("#canvas")
+            .append("svg")
+            .attr("width", width + "px")
+            .attr("height", height + "px");
+
+        // canvas.append("circle")
+        //     .attr("cx", 40)
+        //     .attr("cy", 60)
+        //     .attr("r", 10)
+
+        // canvas.append("circle")
+        //     .attr("cx", 80)
+        //     .attr("cy", 60)
+        //     .attr("r", 10)
+
+        // canvas.append("circle")
+        //     .attr("cx", 120)
+        //     .attr("cy", 60)
+        //     .attr("r", 10)
+
+        var svg = d3.select("svg");
+        
+        // var circle = svg.selectAll("circle")
+        //     .data([32, 57, 112, 293]);
+        // circle.style("fill", "maroon");
+        // circle.attr("r", function(d) { return Math.sqrt(d); });
+        // // circle.attr("cx", function() { return Math.random() * 950; });
+        // circle.attr("cx", function(d, i) { return i * 100 + 30; });
+        // circle.attr("cy", function(d, i) { return i * 100 + 30; });
+
+        // var circleEnter = circle.enter().append("circle");
+        // circleEnter.attr("cy", function(d, i) { return i * 100 + 30; });
+        // circleEnter.attr("cx", function(d, i) { return i * 100 + 30; });
+        // circleEnter.attr("r", function(d) { return Math.sqrt(d); });
+        svg.selectAll("circle")
+            .data([1, 15, 32, 40, 57, 83, 112, 164, 293], function(d) { return d; })
+            .enter().append("circle")
+                .attr("cy", function(d, i) { return Math.sqrt(i + 0.1) * 100; })
+                .attr("cx", function(d, i) { return i * 100 + 30; })
+                .attr("r", function(d) { return Math.sqrt(d); })
+                .style("fill", "maroon");
+
+    </script>
+</body>
+
+</html>

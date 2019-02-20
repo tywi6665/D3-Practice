@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <style type="text/css">
+        body {
+            background-color: #ccc;
+            width: 100%;
+        }
+
+        #canvas {
+            background-color: #ccc;
+            width: 1000px;
+            height: 500px;
+            margin: 50px auto;
+            border: solid 1px #000;
+        }
+
+        svg {
+            background-color: #fff;
+        }
+
+        text {
+            font: bold 48px monospace;
+        }
+
+        .enter {
+            fill: green;
+        }
+
+        .update {
+            fill: #333;
+        }
+
+        .exit {
+            fill: red;
+        }
+    </style>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <title>D3 Practice</title>
+</head>
+
+<body>
+    <noscript>
+        You need to enable JavaScript to run this app.
+    </noscript>
+    <div id="canvas"></div>
+    <script type="text/JavaScript">
+
+        //Sets up the dimensions of the canvas
+        var width = 1000, height = 500;
+
+        //Using the d3 selector method to append an svg onto the canvas
+        var svg = d3.select("#canvas")
+            .append("svg")
+            .attr("width", width + "px")
+            .attr("height", height + "px");
+            //Append g element to the svg. It's used to group svg shapes together
+            g = svg.append("g").attr("transform", "translate(32," + (height / 2) + ")");
+        //Declare alphabet array
+        var circles = "2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 15".split(", ");
+        console.log(circles);
+
+        function update(data) {
+
+            var t = d3.transition()
+                .duration(500);
+
+            //DATA JOIN
+            //Join new data with old elements, if any
+            var shapes = g.selectAll("circle")
+                .data(data, function(d) { return d; });
+
+            //EXIT
+            //Remove old elements not present in new data
+            shapes.exit()
+                .attr("class", "exit")
+                .transition(t)
+                    .attr("cy", function(d, i) { return i * 100; })
+                    .style("fill-opacity", 1e-6)
+                    .remove();
+
+            //UPDATE
+            //Update old elements present in new data
+            shapes.attr("class", "update")
+                .attr("cy", 0)
+                .style("fill-opacity", 1)
+                .transition(t)
+                    .attr("cx", function(d, i) { return i * ((d * 10) * 2); });
+
+            //Enter
+            //Enter new elements present in new data
+            shapes.enter().append("circle")
+                .attr("class", "enter")
+                // .attr("dy", ".35em")
+                .attr("cx", function(d, i) { return i * ((d * 10) * 2); })
+                .attr("cy", function(d, i) { return i * -100; })
+                .attr("r", function(d, i) { return d * 10; })
+                .style("fill-opacity", 1e-6)
+                // .text(function(d) { return d; })
+                .transition(t)
+                    .attr("cy", 0)
+                    .style("fill-opacity", 1);
+
+        }
+
+        //The initial display
+        update(circles);
+
+        //Grab a random sample of letters from the alphabet,
+        //in alphabetical order
+        d3.interval(function() {
+            update(d3.shuffle(circles)
+            .slice(0, Math.floor(Math.random() * 7))
+            .sort());
+        }, 1250);
+
+    </script>
+</body>
+
+</html>
